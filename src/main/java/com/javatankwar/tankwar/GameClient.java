@@ -66,7 +66,7 @@ public class GameClient extends JComponent {
         while (true){//游戏循环，否则只会画一次
             client.repaint();
             try {
-                Thread.sleep(50);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
