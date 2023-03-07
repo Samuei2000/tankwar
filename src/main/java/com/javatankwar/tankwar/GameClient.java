@@ -23,7 +23,6 @@ public class GameClient extends JComponent {
         frame.setTitle("史上最无聊的坦克大战");
         frame.setIconImage(new ImageIcon("assets/images/icon.png").getImage());
         GameClient client = new GameClient();
-        client.repaint();
         frame.add(client);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
