@@ -38,6 +38,13 @@ public class Tank {
     void draw(Graphics g){
         this.determineDirection();
         this.move();
+
+        //限制在画面内
+        if(x<0) x=0;
+        else if(x>800- getImage().getWidth(null)) x=800- getImage().getWidth(null);
+        if(y<0) y=0;
+        else if(y>600- getImage().getHeight(null)) y=600- getImage().getHeight(null);
+
         g.drawImage(this.getImage(),x,y,null);
     }
     Image getImage(){
