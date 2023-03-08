@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//--module-path "C:\Program Files\Java\javafx-sdk-19.0.2.1\lib" --add-modules javafx.controls,javafx.fxml,javafx.graphics
 public class GameClient extends JComponent {
     static final GameClient INSTANCE=new GameClient();//单例模式
     static GameClient getInstance(){
@@ -67,6 +68,7 @@ public class GameClient extends JComponent {
     }
 
     public static void main(String[] args) {
+        com.sun.javafx.application.PlatformImpl.startup(()->{});
         JFrame frame=new JFrame();
         frame.setTitle("史上最无聊的坦克大战");
         frame.setIconImage(new ImageIcon("assets/images/icon.png").getImage());
