@@ -1,6 +1,6 @@
 package com.javatankwar.tankwar;
 
-import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -11,7 +11,7 @@ public class Tank {
     private boolean stopped;
     private boolean enemy;
 
-    void move(){
+    private void move(){
         if(stopped) return;//若没有输入，则不动
         switch (direction){
             case UP :y-=5;break;
@@ -24,11 +24,11 @@ public class Tank {
             case DOWNLEFT:y+=5;x-=5;break;
         }
     }
-    public Tank(int x, int y, Direction direction) {
+    Tank(int x, int y, Direction direction) {
         this(x,y,false,direction);
     }
 
-    public Tank(int x, int y,boolean enemy,Direction direction) {
+     Tank(int x, int y,boolean enemy,Direction direction) {
         this.x = x;
         this.y = y;
         this.direction = direction;
@@ -36,6 +36,7 @@ public class Tank {
     }
 
     void draw(Graphics g){
+        int oldX=x,oldY=y;
         this.determineDirection();
         this.move();
 
@@ -45,7 +46,26 @@ public class Tank {
         if(y<0) y=0;
         else if(y>600- getImage().getHeight(null)) y=600- getImage().getHeight(null);
 
+        Rectangle rec=this.getRectangle();
+        for (Wall wall:GameClient.getInstance().getWalls()){//坦克与墙的碰撞检测,使用GameClient的单例
+            if(rec.intersects(wall.getRectangle())) {//若发生碰撞，x和y不变
+                x = oldX;
+                y = oldY;
+                break;
+            }
+        }
+        for(Tank tank:GameClient.getInstance().getEnemyTanks()){
+            if(rec.intersects(tank.getRectangle())){
+                x = oldX;
+                y = oldY;
+                break;
+            }
+        }
+
         g.drawImage(this.getImage(),x,y,null);
+    }
+    private Rectangle getRectangle(){
+        return new Rectangle(x,y,getImage().getWidth(null),getImage().getHeight(null));
     }
     Image getImage(){
         String prefix=enemy ? "e" : "";
@@ -76,7 +96,7 @@ public class Tank {
             this.stopped=false;
         }
     }
-    public void keyPressed(KeyEvent e) {
+    void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()){
             case KeyEvent.VK_UP :up=true;break;
             case KeyEvent.VK_DOWN :down=true;break;
@@ -85,7 +105,7 @@ public class Tank {
         }
     }
 
-    public void keyReleased(KeyEvent e) {
+    void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()){
             case KeyEvent.VK_UP :up=false;break;
             case KeyEvent.VK_DOWN :down=false;break;
