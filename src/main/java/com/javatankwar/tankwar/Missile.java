@@ -15,17 +15,7 @@ class Missile {
         this.enemy = enemy;
     }
     Image getImage(){
-        switch (direction){
-            case UP :return Tools.getImage("missileU.gif");
-            case UPLEFT:return Tools.getImage("missileLU.gif");
-            case UPRIGHT:return Tools.getImage("missileRU.gif");
-            case DOWN:return Tools.getImage("missileD.gif");
-            case DOWNLEFT:return Tools.getImage("missileLD.gif");
-            case DOWNRIGHT:return Tools.getImage("missileRD.gif");
-            case LEFT:return Tools.getImage("missileL.gif");
-            case RIGHT:return Tools.getImage("missileR.gif");
-        }
-        return null;
+        return direction.getImage("missile");
     }
     private void move(){
         switch (direction){
@@ -33,10 +23,10 @@ class Missile {
             case DOWN:y+=SPEED;break;
             case LEFT:x-=SPEED;break;
             case RIGHT:x+=SPEED;break;
-            case UPLEFT:y-=SPEED;x-=SPEED;break;
-            case UPRIGHT:y-=SPEED;x+=SPEED;break;
-            case DOWNRIGHT:y+=SPEED;x+=SPEED;break;
-            case DOWNLEFT:y+=SPEED;x-=SPEED;break;
+            case LEFT_UP:y-=SPEED;x-=SPEED;break;
+            case RIGHT_UP:y-=SPEED;x+=SPEED;break;
+            case RIGHT_DOWN:y+=SPEED;x+=SPEED;break;
+            case LEFT_DOWN:y+=SPEED;x-=SPEED;break;
         }
     }
     void draw(Graphics g){
