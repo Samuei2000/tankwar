@@ -7,6 +7,7 @@ import javafx.scene.media.MediaPlayer;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.Random;
 
 public class Tank {
     private int x;
@@ -107,6 +108,7 @@ public class Tank {
             case KeyEvent.VK_LEFT: left=true;break;
             case KeyEvent.VK_RIGHT: right=true;break;
             case KeyEvent.VK_CONTROL:fire();break;//ctrl开火
+            case KeyEvent.VK_A: superFire();break;//超级开火，复用fire()
 
         }
         //this.determineDirection();
@@ -117,6 +119,17 @@ public class Tank {
                 enemy,direction);
         GameClient.getInstance().getMissiles().add(missile);
         Media sound=new Media(new File("assets/audios/shoot.wav").toURI().toString());
+        MediaPlayer mediaPlayer=new MediaPlayer(sound);
+        mediaPlayer.play();
+    }
+    private void superFire() {
+        for(Direction direction:Direction.values()){
+            Missile missile=new Missile(x+ getImage().getWidth(null)/2-6,y+ getImage().getHeight(null)/2-6,
+                    enemy,direction);
+            GameClient.getInstance().getMissiles().add(missile);
+        }
+        String audioFile=new Random().nextBoolean()?"supershoot.aiff":"supershoot.wav";
+        Media sound=new Media(new File("assets/audios/"+audioFile).toURI().toString());
         MediaPlayer mediaPlayer=new MediaPlayer(sound);
         mediaPlayer.play();
     }
