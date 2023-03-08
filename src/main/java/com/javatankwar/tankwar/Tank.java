@@ -1,9 +1,6 @@
 package com.javatankwar.tankwar;
-
-
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -15,7 +12,27 @@ public class Tank {
     private int y;
     private Direction direction;
     private boolean stopped;
+    private int hp=100;
+    private boolean live=true;
     private boolean enemy;
+
+    int getHp() {
+        return hp;
+    }
+     void setHp(int hp) {
+        this.hp = hp;
+    }
+    void setLive(boolean live) {
+        this.live = live;
+    }
+
+    boolean isLive() {
+        return live;
+    }
+    boolean isEnemy() {
+        return enemy;
+    }
+
 
     private void move(){
         if(stopped) return;//若没有输入，则不动
@@ -62,7 +79,7 @@ public class Tank {
 
         g.drawImage(this.getImage(),x,y,null);
     }
-    private Rectangle getRectangle(){
+    Rectangle getRectangle(){
         return new Rectangle(x,y,getImage().getWidth(null),getImage().getHeight(null));
     }
     Image getImage(){
@@ -92,7 +109,6 @@ public class Tank {
             case KeyEvent.VK_RIGHT: right=true;break;
             case KeyEvent.VK_CONTROL:fire();break;//ctrl开火
             case KeyEvent.VK_A: superFire();break;//超级开火，复用fire()
-
         }
         this.determineDirection();
     }

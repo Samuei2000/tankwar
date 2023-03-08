@@ -32,6 +32,11 @@ public class GameClient extends JComponent {
         );
         this.missiles=new ArrayList<>();
     }
+
+    Tank getPlayerTank() {
+        return playerTank;
+    }
+
     private Tank playerTank;
     private List<Tank> enemyTanks;//敌方坦克的数据结构
 
@@ -50,12 +55,17 @@ public class GameClient extends JComponent {
     List<Missile> getMissiles() {
         return missiles;
     }
+    void removeMissle(Missile missile){
+        missiles.remove(missile);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0,0,800,600);//把背景改为黑色
         playerTank.draw(g);
+        enemyTanks.removeIf(t->!t.isLive());
+        missiles.removeIf(m->!m.isLive());
         for (Tank tank:enemyTanks) {
             tank.draw(g);
         }
@@ -93,7 +103,7 @@ public class GameClient extends JComponent {
         while (true){//游戏循环，否则只会画一次
             client.repaint();
             try {
-                Thread.sleep(20);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
