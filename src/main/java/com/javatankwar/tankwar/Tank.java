@@ -10,6 +10,7 @@ import java.io.File;
 import java.util.Random;
 
 public class Tank {
+    private static final int MOVESPEED = 5;
     private int x;
     private int y;
     private Direction direction;
@@ -18,16 +19,8 @@ public class Tank {
 
     private void move(){
         if(stopped) return;//若没有输入，则不动
-        switch (direction){
-            case UP :y-=5;break;
-            case DOWN:y+=5;break;
-            case LEFT:x-=5;break;
-            case RIGHT:x+=5;break;
-            case LEFT_UP:y-=5;x-=5;break;
-            case RIGHT_UP:y-=5;x+=5;break;
-            case RIGHT_DOWN:y+=5;x+=5;break;
-            case LEFT_DOWN:y+=5;x-=5;break;
-        }
+        x+= direction.xFactor*MOVESPEED;
+        y+= direction.yFactor*MOVESPEED;
     }
     Tank(int x, int y, Direction direction) {
         this(x,y,false,direction);
@@ -101,7 +94,7 @@ public class Tank {
             case KeyEvent.VK_A: superFire();break;//超级开火，复用fire()
 
         }
-        //this.determineDirection();
+        this.determineDirection();
     }
 
     private void fire() {
