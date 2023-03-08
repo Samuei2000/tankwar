@@ -43,7 +43,7 @@ class Missile {
                 return;
             }
         }
-        if(enemy){//若这颗是地方子弹
+        if(enemy){//若这颗是敌方子弹
             Tank playerTank=GameClient.getInstance().getPlayerTank();
             if(rectangle.intersects(playerTank.getRectangle())){
                 playerTank.setHp(playerTank.getHp()-20);
