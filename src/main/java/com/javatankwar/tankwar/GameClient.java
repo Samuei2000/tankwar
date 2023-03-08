@@ -29,6 +29,7 @@ public class GameClient extends JComponent {
                 new Wall(100,80,false,15),
                 new Wall(700,80,false,15)
         );
+        this.missiles=new ArrayList<>();
     }
     private Tank playerTank;
     private List<Tank> enemyTanks;//敌方坦克的数据结构
@@ -43,6 +44,12 @@ public class GameClient extends JComponent {
 
     List<Wall> walls;//围墙的数据结构
 
+    private List<Missile> missiles;
+
+    List<Missile> getMissiles() {
+        return missiles;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(Color.BLACK);
@@ -54,13 +61,17 @@ public class GameClient extends JComponent {
         for(Wall wall:walls){
             wall.draw(g);
         }
+        for(Missile missile:missiles){
+            missile.draw(g);
+        }
     }
 
     public static void main(String[] args) {
         JFrame frame=new JFrame();
         frame.setTitle("史上最无聊的坦克大战");
         frame.setIconImage(new ImageIcon("assets/images/icon.png").getImage());
-        GameClient client = new GameClient();
+        //GameClient client = new GameClient();确保只有一个单例，这个client与INSTANCE不同
+        final GameClient client=GameClient.getInstance();
         frame.add(client);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
