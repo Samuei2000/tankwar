@@ -45,7 +45,8 @@ class Missile {
         }
         if(enemy){//若这颗是敌方子弹
             Tank playerTank=GameClient.getInstance().getPlayerTank();
-            if(rectangle.intersects(playerTank.getRectangle())){
+            if(rectangle.intersects(playerTank.getRectangle())){//missle和tank发生碰撞的代码
+                addExplosion();
                 playerTank.setHp(playerTank.getHp()-20);
                 if(playerTank.getHp()<=0)
                     playerTank.setLive(false);
@@ -55,6 +56,7 @@ class Missile {
         else {//若这颗是我方子弹，需同时把该子弹和该子弹击中的敌人设为死亡
             for(Tank tank:GameClient.INSTANCE.getEnemyTanks()){
                 if(rectangle.intersects(tank.getRectangle())){
+                    addExplosion();
                     tank.setLive(false);
                     this.setLive(false);
                     break;
@@ -62,6 +64,10 @@ class Missile {
             }
         }
         g.drawImage(getImage(),x,y,null);
+    }
+    private void addExplosion(){
+        GameClient.getInstance().addExplosion(new Explosion(x,y));
+        Tools.playAudio("explode.wav");
     }
     Rectangle getRectangle(){
         return new Rectangle(x,y,getImage().getWidth(null),getImage().getHeight(null));

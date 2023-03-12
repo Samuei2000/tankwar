@@ -27,6 +27,7 @@ public class GameClient extends JComponent {
                 new Wall(700,80,false,15)
         );
         this.missiles=new ArrayList<>();
+        this.explosions=new ArrayList<>();
     }
 
     private void initEnemyTanks() {
@@ -55,6 +56,10 @@ public class GameClient extends JComponent {
     List<Wall> walls;//围墙的数据结构
 
     private List<Missile> missiles;
+    private List<Explosion> explosions;
+    void addExplosion(Explosion explosion){
+        explosions.add(explosion);
+    }
 
     List<Missile> getMissiles() {
         return missiles;
@@ -64,18 +69,22 @@ public class GameClient extends JComponent {
         g.setColor(Color.BLACK);
         g.fillRect(0,0,800,600);//把背景改为黑色
         playerTank.draw(g);
-        enemyTanks.removeIf(t->!t.isLive());
         if(enemyTanks.isEmpty())
             this.initEnemyTanks();//敌人坦克全部死亡后复活
-        missiles.removeIf(m->!m.isLive());
+        enemyTanks.removeIf(t->!t.isLive());
         for (Tank tank:enemyTanks) {
             tank.draw(g);
         }
         for(Wall wall:walls){
             wall.draw(g);
         }
+        missiles.removeIf(m->!m.isLive());
         for(Missile missile:missiles){
             missile.draw(g);
+        }
+        explosions.removeIf(m->!m.isLive());
+        for(Explosion explosion:explosions){
+            explosion.draw(g);
         }
     }
 

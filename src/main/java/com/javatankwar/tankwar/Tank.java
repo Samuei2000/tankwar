@@ -1,9 +1,7 @@
 package com.javatankwar.tankwar;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.Random;
 
 public class Tank {
@@ -117,7 +115,7 @@ public class Tank {
         Missile missile=new Missile(x+ getImage().getWidth(null)/2-6,y+ getImage().getHeight(null)/2-6,
                 enemy,direction);
         GameClient.getInstance().getMissiles().add(missile);
-        playAudio("shoot.wav");
+        Tools.playAudio("shoot.wav");
     }
     private void superFire() {
         for(Direction direction:Direction.values()){
@@ -126,13 +124,7 @@ public class Tank {
             GameClient.getInstance().getMissiles().add(missile);
         }
         String audioFile=new Random().nextBoolean()?"supershoot.aiff":"supershoot.wav";
-        playAudio(audioFile);
-    }
-
-    private static void playAudio(String fileName) {
-        Media sound=new Media(new File("assets/audios/"+ fileName).toURI().toString());
-        MediaPlayer mediaPlayer=new MediaPlayer(sound);
-        mediaPlayer.play();
+        Tools.playAudio(audioFile);
     }
 
     void keyReleased(KeyEvent e) {
