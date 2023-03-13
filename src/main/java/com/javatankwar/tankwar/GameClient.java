@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 //--module-path "C:\Program Files\Java\javafx-sdk-19.0.2.1\lib" --add-modules javafx.controls,javafx.fxml,javafx.graphics
 public class GameClient extends JComponent {
@@ -26,7 +27,7 @@ public class GameClient extends JComponent {
                 new Wall(100,80,false,15),
                 new Wall(700,80,false,15)
         );
-        this.missiles=new ArrayList<>();
+        this.missiles=new CopyOnWriteArrayList<>();//线程安全
         this.explosions=new ArrayList<>();
     }
 
@@ -78,7 +79,8 @@ public class GameClient extends JComponent {
         for(Wall wall:walls){
             wall.draw(g);
         }
-        missiles.removeIf(m->!m.isLive());
+        //System.out.println(Thread.currentThread().getName());
+        missiles.removeIf(m->!m.isLive());//当集合在迭代时被修改就会出现ConcurrentModificationException
         for(Missile missile:missiles){
             missile.draw(g);
         }
@@ -113,6 +115,10 @@ public class GameClient extends JComponent {
         frame.setVisible(true);//可视
         while (true){//游戏循环，否则只会画一次
             client.repaint();
+            //System.out.println(Thread.currentThread().getName());//打印是否是多线程
+            for(Tank tank: client.enemyTanks){
+                tank.actRandomly();
+            }
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

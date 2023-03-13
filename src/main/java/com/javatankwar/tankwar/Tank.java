@@ -50,7 +50,9 @@ public class Tank {
 
     void draw(Graphics g){
         int oldX=x,oldY=y;
-        this.determineDirection();
+        if(!this.enemy) {//只对我方坦克
+            this.determineDirection();
+        }
         this.move();
 
         //限制在画面内
@@ -60,7 +62,7 @@ public class Tank {
         else if(y>600- getImage().getHeight(null)) y=600- getImage().getHeight(null);
 
         Rectangle rec=this.getRectangle();
-        for (Wall wall:GameClient.getInstance().getWalls()){//坦克与墙的碰撞检测,使用GameClient的单例
+        for (Wall wall:GameClient.getInstance().getWalls()){//当前坦克与墙的碰撞检测,使用GameClient的单例
             if(rec.intersects(wall.getRectangle())) {//若发生碰撞，x和y不变
                 x = oldX;
                 y = oldY;
@@ -68,13 +70,16 @@ public class Tank {
             }
         }
         for(Tank tank:GameClient.getInstance().getEnemyTanks()){
-            if(rec.intersects(tank.getRectangle())){
+            if(tank!=this && rec.intersects(tank.getRectangle())){//当前与其它敌人坦克的碰撞检测
                 x = oldX;
                 y = oldY;
                 break;
             }
         }
-
+        if(this.enemy&&rec.intersects(GameClient.getInstance().getPlayerTank().getRectangle())){//若当前坦克为敌人，与玩家的碰撞检测
+            x = oldX;
+            y = oldY;
+        }
         g.drawImage(this.getImage(),x,y,null);
     }
     Rectangle getRectangle(){
@@ -125,6 +130,19 @@ public class Tank {
         }
         String audioFile=new Random().nextBoolean()?"supershoot.aiff":"supershoot.wav";
         Tools.playAudio(audioFile);
+    }
+    private final Random random=new Random();//保证所有坦克初始是同样的random
+    private int step=random.nextInt(12)+3;
+    void actRandomly(){
+        Direction[] dirs=Direction.values();
+        if(step==0){
+            step=random.nextInt(12)+3;
+            this.direction=dirs[random.nextInt(dirs.length)];
+            if(random.nextBoolean()){
+                this.fire();
+            }
+        }
+        step--;
     }
 
     void keyReleased(KeyEvent e) {
