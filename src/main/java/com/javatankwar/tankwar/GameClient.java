@@ -116,6 +116,11 @@ public class GameClient extends JComponent {
         while (true){//游戏循环，否则只会画一次
             client.repaint();
             //System.out.println(Thread.currentThread().getName());//打印是否是多线程
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             for(Tank tank: client.enemyTanks){
                 tank.actRandomly();
             }
